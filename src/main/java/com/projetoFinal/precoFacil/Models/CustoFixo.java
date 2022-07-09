@@ -1,10 +1,27 @@
 package com.projetoFinal.precoFacil.Models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="custoFixo")
 public class CustoFixo {
 
-	private Long id;
+	@Id
+	@GeneratedValue(strategy =  GenerationType.IDENTITY) //número do id é autoincrementado
+	private final Long id = null;
+	
+	@Column(name = "valorHora")
 	private Float valorHora;
+	
+	@Column(name = "salario")
 	private Float salario;
+	
+	@Column(name = "horasDia")
 	private Integer horasDia;
 	
 	

@@ -1,18 +1,49 @@
 package com.projetoFinal.precoFacil.Models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "ingredientes", uniqueConstraints = @UniqueConstraint(columnNames = "nome"))
 public class Ingrediente {
 
+	@Id
+	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
-	private Float valor;
+	
+	@Column(name = "preco", nullable = false)
+	private Float preco;
+	
+	@Column(name = "undMedida", nullable = false, length=7)
+	private String undMedida;
+	
+	@Column(name="quantidade", nullable = false)
 	private Integer quantidade;
+	
+	//cria uma nova tabela "ingredientesReceita", gerando um relacionamento muitos para muitos
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receitas", cascade = CascadeType.ALL) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+	@JsonIgnore
+	List<Receita> receitas;
 	
 	public Ingrediente() {
 		super();
 	}
 	
-	public Ingrediente(Float valor, Integer quantidade) {
+	public Ingrediente(Float preco, Integer quantidade) {
 		super();
-		this.valor = valor;
+		this.preco = preco;
 		this.quantidade = quantidade;
 	}
 
@@ -20,12 +51,20 @@ public class Ingrediente {
 		return id;
 	}
 	
-	public Float getValor() {
-		return valor;
+	public Float getpreco() {
+		return preco;
 	}
-	public void setValor(Float valor) {
-		this.valor = valor;
+	public void setpreco(Float preco) {
+		this.preco = preco;
 	}
+	
+	public String getUndMedida() {
+		return undMedida;
+	}
+	public void setUndMedida(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+	
 	public Integer getQuantidade() {
 		return quantidade;
 	}
