@@ -2,34 +2,34 @@ package com.projetoFinal.precoFacil.Models;
 
 public class Ingrediente {
 
-	private int id;
-	private float valor;
-	private int quantidade;
+	private Long id;
+	private Float valor;
+	private Integer quantidade;
 	
 	public Ingrediente() {
 		super();
 	}
 	
-	public Ingrediente(float valor, int quantidade) {
+	public Ingrediente(Float valor, Integer quantidade) {
 		super();
 		this.valor = valor;
 		this.quantidade = quantidade;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public float getValor() {
+	public Float getValor() {
 		return valor;
 	}
-	public void setValor(float valor) {
+	public void setValor(Float valor) {
 		this.valor = valor;
 	}
-	public int getQuantidade() {
+	public Integer getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
 	

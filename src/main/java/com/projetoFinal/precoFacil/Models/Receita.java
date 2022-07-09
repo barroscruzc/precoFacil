@@ -2,22 +2,22 @@ package com.projetoFinal.precoFacil.Models;
 
 public class Receita {
 
-	private int id;
-	private int codigo;
+	private Long id;
+	private Integer codigo;
 	private String nome;
 	private String descricao;
-	private int rendimento;
-	private float custoEmbalagem;
-	private int lucro;
+	private Integer rendimento;
+	private Float custoEmbalagem;
+	private Integer lucro;
 	private String categoria;
-	private int tempoPreparo;
+	private Integer tempoPreparo;
 	
 	public Receita() {
 		super();
 	}
 	
-	public Receita(int codigo, String nome, String descricao, int rendimento, float custoEmbalagem, int lucro,
-			String categoria, int tempoPreparo) {
+	public Receita(Integer codigo, String nome, String descricao, Integer rendimento, Float custoEmbalagem, Integer lucro,
+			String categoria, Integer tempoPreparo) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
@@ -29,14 +29,14 @@ public class Receita {
 		this.tempoPreparo = tempoPreparo;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public int getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
-	public void setCodigo(int codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 	public String getNome() {
@@ -51,22 +51,22 @@ public class Receita {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public int getRendimento() {
+	public Integer getRendimento() {
 		return rendimento;
 	}
-	public void setRendimento(int rendimento) {
+	public void setRendimento(Integer rendimento) {
 		this.rendimento = rendimento;
 	}
-	public float getCustoEmbalagem() {
+	public Float getCustoEmbalagem() {
 		return custoEmbalagem;
 	}
-	public void setCustoEmbalagem(float custoEmbalagem) {
+	public void setCustoEmbalagem(Float custoEmbalagem) {
 		this.custoEmbalagem = custoEmbalagem;
 	}
-	public int getLucro() {
+	public Integer getLucro() {
 		return lucro;
 	}
-	public void setLucro(int lucro) {
+	public void setLucro(Integer lucro) {
 		this.lucro = lucro;
 	}
 	public String getCategoria() {
@@ -75,10 +75,10 @@ public class Receita {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-	public int getTempoPreparo() {
+	public Integer getTempoPreparo() {
 		return tempoPreparo;
 	}
-	public void setTempoPreparo(int tempoPreparo) {
+	public void setTempoPreparo(Integer tempoPreparo) {
 		this.tempoPreparo = tempoPreparo;
 	}
 

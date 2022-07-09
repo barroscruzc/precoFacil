@@ -2,9 +2,9 @@ package com.projetoFinal.precoFacil.Models;
 
 public class CustoFixo {
 
-	private int id;
-	private float valorHora;
-	private float salario;
+	private Long id;
+	private Float valorHora;
+	private Float salario;
 	private Integer horasDia;
 	
 	
@@ -12,27 +12,27 @@ public class CustoFixo {
 		super();
 	}
 	
-	public CustoFixo(float valorHora, float salario, Integer horasDia) {
+	public CustoFixo(Float valorHora, Float salario, Integer horasDia) {
 		super();
 		this.valorHora = valorHora;
 		this.salario = salario;
 		this.horasDia = horasDia;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public float getValorHora() {
+	public Float getValorHora() {
 		return valorHora;
 	}
-	public void setValorHora(float valorHora) {
+	public void setValorHora(Float valorHora) {
 		this.valorHora = valorHora;
 	}
-	public float getSalario() {
+	public Float getSalario() {
 		return salario;
 	}
-	public void setSalario(float salario) {
+	public void setSalario(Float salario) {
 		this.salario = salario;
 	}
 	public Integer getHorasDia() {
