@@ -1,9 +1,7 @@
 package com.projetoFinal.precoFacil.Models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -53,14 +52,19 @@ public class Receita {
 	@Column(name="custoFinal", nullable=false)
 	private Float custoFinal;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // https://www.baeldung.com/jpa-cascade-types | https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+	
+	@ManyToOne
+	private CustoFixo custoFixo;
+	
+	@ManyToMany(fetch = FetchType.LAZY) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
 	@JoinTable(  //Sobre anotações JoinTable e JoinColumn -> https://www.devmedia.com.br/hibernate-mapping-mapeando-relacionamentos-entre-entidades/29445
 			name = "ingredientes_receitas", 
 			joinColumns = {
 					@JoinColumn(name = "receita_id", referencedColumnName = "id", nullable=false, updatable = false)}, 
 			inverseJoinColumns = {
-					@JoinColumn(name = "ingrediente_id", referencedColumnName = "id", nullable=false, updatable = false)})
-	private List<Ingrediente> ingredientes = new ArrayList<>(); //lista que armazena os ingredientes usados na receita
+					@JoinColumn(name = "ingrediente_id", referencedColumnName = "id", nullable=false, updatable = false)}
+			)
+	private List<Ingrediente> ingredientes; //lista que armazena os ingredientes usados na receita
 	
 	public Receita() {
 		super();

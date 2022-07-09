@@ -32,8 +32,8 @@ public class Ingrediente {
 	@Column(name="quantidade", nullable = false)
 	private Integer quantidade;
 	
-	//cria uma nova tabela "ingredientesReceita", gerando um relacionamento muitos para muitos
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receitas", cascade = CascadeType.ALL) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+	//cria uma nova tabela "ingredientesReceita", gerando um relacionamento muitos para muitos  | https://www.baeldung.com/jpa-cascade-types 
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receitas", cascade = CascadeType.ALL)    // | https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
 	@JsonIgnore
 	List<Receita> receitas;
 	

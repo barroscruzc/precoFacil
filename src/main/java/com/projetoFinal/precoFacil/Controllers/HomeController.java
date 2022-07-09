@@ -1,5 +1,5 @@
 package com.projetoFinal.precoFacil.Controllers;
 
-public class Home {
+public class HomeController {
 
 }
