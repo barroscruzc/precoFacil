@@ -1,6 +1,8 @@
 package com.projetoFinal.precoFacil.Models;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,10 +27,10 @@ public class Receita {
 	@Column(name ="codigo", nullable = false)
 	private Integer codigo;
 	
-	@Column(name = "nome", nullable = false)
+	@Column(name = "nome", length = 30, nullable = false)
 	private String nome;
 	
-	@Column(name="descricao", length = 100)
+	@Column(name="descricao", length = 100, nullable = false)
 	private String descricao;
 	
 	@Column(name="rendimento", nullable = false)
@@ -46,12 +48,11 @@ public class Receita {
 	@Column(name="tempoPreparo", nullable=false)
 	private Integer tempoPreparo;
 	
+	@Column(name="precoVenda", nullable=false)
+	private Float precoVenda;
+	
 	@Column(name="custoInicial", nullable=false)
 	private Float custoInicial;
-	
-	@Column(name="custoFinal", nullable=false)
-	private Float custoFinal;
-	
 	
 	@ManyToOne
 	private CustoFixo custoFixo;
@@ -64,28 +65,11 @@ public class Receita {
 			inverseJoinColumns = {
 					@JoinColumn(name = "ingrediente_id", referencedColumnName = "id", nullable=false, updatable = false)}
 			)
-	private List<Ingrediente> ingredientes; //lista que armazena os ingredientes usados na receita
+	private HashMap<Ingrediente, Float> ingredientes; //lista que armazena os ingredientes usados na receita
+	//https://www.baeldung.com/java-hashmap
 	
 	public Receita() {
 		super();
-	}
-
-	public Receita(Long id, Integer codigo, String nome, String descricao, Integer rendimento, Float custoEmbalagem,
-			Integer lucro, String categoria, Integer tempoPreparo, Float custoInicial, Float custoFinal,
-			List<Ingrediente> ingredientes) {
-		super();
-		this.id = id;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.descricao = descricao;
-		this.rendimento = rendimento;
-		this.custoEmbalagem = custoEmbalagem;
-		this.lucro = lucro;
-		this.categoria = categoria;
-		this.tempoPreparo = tempoPreparo;
-		this.custoInicial = custoInicial;
-		this.custoFinal = custoFinal;
-		this.ingredientes = ingredientes;
 	}
 
 	public Long getId() {
@@ -120,7 +104,7 @@ public class Receita {
 		return custoEmbalagem;
 	}
 	public void setCustoEmbalagem(Float custoEmbalagem) {
-		this.custoEmbalagem = custoEmbalagem;
+		this.custoEmbalagem = custoEmbalagem * rendimento;
 	}
 	public Integer getLucro() {
 		return lucro;
@@ -141,28 +125,68 @@ public class Receita {
 		this.tempoPreparo = tempoPreparo;
 	}
 	
-	public Float custoInicial(){
-		return custoInicial;
-	}
-
-	public void setCustoInicial(Float custoInicial) {
-		this.custoInicial = custoInicial;
+	public void setCustoFixo(CustoFixo custoFixo) {
+		this.custoFixo = custoFixo;
 	}
 	
-	public Float custoFinal(){
-		return custoInicial;
-	}
-
-	public void setCustoFinal(Float custoInicial) {
-		this.custoInicial = custoInicial;
+	public CustoFixo getCustoFixo() {
+		return custoFixo;
 	}
 	
-	public List<Ingrediente> getIngredientes() {
+	
+	public void setCustoInicial() {
+		Float somaIngredientes = (float) 0;
+		
+		/*ITERANDO SOBRE O HASHMAP PARA SOMAR OS VALORES DOS INGREDIENTES USADOS
+		 *O custo de cada ingrediente é igual ao seu preço multiplicado pelo custo por unidade ou medida .
+		 * Deste modo, por exemplo, o custo de 500g de chocolate será igual ao valor do kg do produto 
+		 * (que é o atributo preco do objeto ingrediente) multiplicado pela quantidade usada na receita
+		 * (que será um valor Float 0.5, inserido no hashMap como value para a key Ingrediente
+		 * Ingredientes que possuem unidade de medida por peso ou líquido serão recebidos como Float da seguinte maneira:
+		 * cada algarismo na parte inteira do Float corresponte a 1kg ou 1L, enquanto os algarismos da parte fracionária 
+		 * (após a vígula) são frações de Litro ou kg. Assim, o chocolate do exemplo acima seria representado 
+		 * por 0.5, ou, se fossem 250g, 0.25, e assim por diante*/
+		for(Map.Entry<Ingrediente, Float> item : this.ingredientes.entrySet()) {
+			somaIngredientes += item.getKey().getPreco() * item.getValue();
+		}
+		
+		//calculando o valor dos ingredientes conforme as quantidades de cada item usadas na receita
+		this.custoInicial = somaIngredientes + (this.tempoPreparo * this.custoFixo.getValorHora()) + (this.custoEmbalagem * this.rendimento);
+		
+	}
+	
+	public Float getPrecoVenda(){
+		return precoVenda;
+	}
+
+	public void setPrecoVenda() {
+		this.precoVenda = this.custoInicial * this.lucro;
+	}
+	
+	public HashMap<Ingrediente, Float> getIngredientes() {
 		return ingredientes;
 	}
 	
-	public void setIngredientes(List<Ingrediente> ingredientes) {
-		this.ingredientes = ingredientes;
+	public void setIngredientes(Ingrediente ingrediente, Float quantidade) {
+		this.ingredientes.put(ingrediente, quantidade);
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(ingredientes);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Receita other = (Receita) obj;
+		return Objects.equals(ingredientes, other.ingredientes);
+	}
+
 	
 }

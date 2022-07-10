@@ -23,53 +23,53 @@ public class Ingrediente {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="nome", nullable=false)
+	private String nome;
+	
 	@Column(name = "preco", nullable = false)
 	private Float preco;
 	
-	@Column(name = "undMedida", nullable = false, length=7)
-	private String undMedida;
-	
-	@Column(name="quantidade", nullable = false)
-	private Integer quantidade;
-	
 	//cria uma nova tabela "ingredientesReceita", gerando um relacionamento muitos para muitos  | https://www.baeldung.com/jpa-cascade-types 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receitas", cascade = CascadeType.ALL)    // | https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receitas", cascade = CascadeType.PERSIST)    // | https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
 	@JsonIgnore
-	List<Receita> receitas;
+	private List<Receita> receitas;
 	
 	public Ingrediente() {
 		super();
 	}
 	
-	public Ingrediente(Float preco, Integer quantidade) {
+	public Ingrediente(String nome, Float preco, List<Receita> receitas) {
 		super();
+		this.nome = nome;
 		this.preco = preco;
-		this.quantidade = quantidade;
+		this.receitas = receitas;
 	}
 
 	public Long getId() {
 		return id;
 	}
-	
-	public Float getpreco() {
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Float getPreco() {
 		return preco;
 	}
 	public void setpreco(Float preco) {
 		this.preco = preco;
 	}
 	
-	public String getUndMedida() {
-		return undMedida;
-	}
-	public void setUndMedida(Integer quantidade) {
-		this.quantidade = quantidade;
+	public List<Receita> getReceitas(){
+		return receitas;
 	}
 	
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
+	public void setReceitas(List<Receita> receitas) {
+		this.receitas = receitas;
 	}
 	
 }

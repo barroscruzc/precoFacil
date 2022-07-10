@@ -2,8 +2,10 @@ package com.projetoFinal.precoFacil.Models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +29,7 @@ public class CustoFixo {
 	@Column(name = "horasDia")
 	private Integer horasDia;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Receita> receitas;
 	
 	
@@ -35,11 +37,13 @@ public class CustoFixo {
 		super();
 	}
 	
-	public CustoFixo(Float valorHora, Float salario, Integer horasDia) {
+	public CustoFixo(Float salario, Integer horasDia, List<Receita> receitas) {
 		super();
-		this.valorHora = valorHora;
 		this.salario = salario;
 		this.horasDia = horasDia;
+		Float valorHora = salario / 20 / horasDia;
+		this.valorHora = valorHora;
+		this.receitas = receitas;
 	}
 
 	public Long getId() {
@@ -49,7 +53,8 @@ public class CustoFixo {
 	public Float getValorHora() {
 		return valorHora;
 	}
-	public void setValorHora(Float valorHora) {
+	public void setValorHora(Float salario, Integer horasDia) {
+		Float valorHora = salario / 20 / horasDia;
 		this.valorHora = valorHora;
 	}
 	public Float getSalario() {
