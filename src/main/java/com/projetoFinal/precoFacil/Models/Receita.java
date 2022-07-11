@@ -187,6 +187,4 @@ public class Receita {
 		Receita other = (Receita) obj;
 		return Objects.equals(ingredientes, other.ingredientes);
 	}
-
-	
 }

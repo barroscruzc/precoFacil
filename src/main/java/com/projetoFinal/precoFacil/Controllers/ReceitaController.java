@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Controller // Informa que classe UserController eh o nosso controller
-@RequestMapping(path = "/precofacil")
+@RequestMapping(path = "/precofacil/recipe")
 public class ReceitaController {
 
 	@Autowired // Comunica com o UserRepository
@@ -40,15 +40,15 @@ public class ReceitaController {
 
 	//Controller Receitas
 	// CRUD - Read
-	@RequestMapping(path = "/allRecipes")
+	@RequestMapping(path = "/all")
 	public String listaUsers(Model model) {
 		model.addAttribute("receita", receitaRepository.findAll());
 		return "allRecipes";
 	}
 
 	// CRUD - Create
-	@GetMapping("/newRecipe")
-	public String cadastrar(Model model) {
+	@GetMapping("/new")
+	public String newRecipe(Model model) {
 		model.addAttribute("receita", new Receita());
 		//O cálculo do valorHora é feito pela Model CustoFixo(linha 44), e pode ser representado pela expressão: ValorHora = Salário / 20 / HorasDia
 		model.addAttribute("valorHora", custoFixoRepository.findById((long)1).get().getValorHora());
@@ -57,7 +57,7 @@ public class ReceitaController {
 		return "newRecipe";
 	}
 
-	@PostMapping("/newRecipe/add")
+	@PostMapping("/new/add")
 	public String addRecipe(@RequestParam Integer codigo,@RequestParam String nome,@RequestParam String descricao,@RequestParam Integer rendimento,@RequestParam Float custoEmbalagem,
 			@RequestParam Integer lucro, @RequestParam String categoria, @RequestParam Integer tempoPreparo, @RequestParam HashMap<Ingrediente, Float> ingredientes, Model model) {
 		
@@ -69,7 +69,7 @@ public class ReceitaController {
 			//mensagem de erro
 			model.addAttribute("nomeExiste", "Receita já cadastrada!");
 			//recarrega a página, exibindo a mensagem de erro
-			return "/newRecipe";
+			return "newRecipe";
 		}
 
 		//Verificação por Codigo
@@ -78,7 +78,7 @@ public class ReceitaController {
 			//mensagem de erro
 			model.addAttribute("codigoExiste", "Código de receita já cadastrado!");
 			//recarrega a página, exibindo a mensagem de erro
-			return "/newRecipe";
+			return "newRecipe";
 		} else {
 			Receita receita = new Receita();
 			
@@ -98,22 +98,23 @@ public class ReceitaController {
 			
 			//salvar receita no banco de dados
 			receitaRepository.save(receita);
+			model.addAttribute("salvoSucesso", "Receita Salva com sucesso!");
 			return "redirect:/precofacil/allRecipes";
 				}
 		}
 
 	// CRUD - update
-	@GetMapping(path="/recipe/update/{id}")
+	@GetMapping(path="/update/{id}")
 	public String alterarReceita(@PathVariable("id") Long id, Model model) {
 		Optional<Receita> receitaOpt = receitaRepository.findById(id);
 		if (!receitaOpt.isPresent()) {
-			throw new IllegalArgumentException("Cadastro invï¿½lido.");
+			throw new IllegalArgumentException("Cadastro invállido.");
 		}
 		model.addAttribute("receita", receitaOpt.get());
 		return "updateRecipe";
 	}
 	
-	@PostMapping("/recipe/update/{id}/save")
+	@PostMapping("/update/{id}/save")
 	public String salvarReceita(@Valid @ModelAttribute("receita") Receita receita, @PathVariable("id") Long id, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "updateRecipe";
@@ -146,7 +147,7 @@ public class ReceitaController {
 	}
 
 	// CRUD - Delete
-	@RequestMapping(path="/receita/delete/{id}")
+	@RequestMapping(path="/delete/{id}")
 	public String deleteUser(@PathVariable Long id) {
 		receitaRepository.deleteById(id);
 		return "redirect:/precofacil/allRecipes";

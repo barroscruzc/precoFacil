@@ -18,7 +18,7 @@ public class CustoFixo {
 
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY) //número do id é autoincrementado
-	private final Long id = null;
+	private Long id;
 	
 	@Column(name = "valorHora")
 	private Float valorHora;

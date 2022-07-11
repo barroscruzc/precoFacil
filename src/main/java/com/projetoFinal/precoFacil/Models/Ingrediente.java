@@ -60,6 +60,11 @@ public class Ingrediente {
 	public Float getPreco() {
 		return preco;
 	}
+	
+	public void setPreco(Float preco) {
+		this.preco = preco;
+	}
+	
 	public void setpreco(Float preco) {
 		this.preco = preco;
 	}
