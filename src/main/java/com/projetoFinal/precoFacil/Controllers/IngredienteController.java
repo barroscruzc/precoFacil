@@ -104,5 +104,5 @@ public class IngredienteController {
 		ingredienteRepository.deleteById(id);
 		return "redirect:/precofacil/allIngredients";
 	}
-	
+
 }

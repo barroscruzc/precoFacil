@@ -1,10 +1,13 @@
 package com.projetoFinal.precoFacil.Models;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,10 +17,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "receitas")
+@Table(name = "receita")
 public class Receita {
 
 	@Id
@@ -57,15 +61,25 @@ public class Receita {
 	@ManyToOne
 	private CustoFixo custoFixo;
 	
-	@ManyToMany(fetch = FetchType.LAZY) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
 	@JoinTable(  //Sobre anotações JoinTable e JoinColumn -> https://www.devmedia.com.br/hibernate-mapping-mapeando-relacionamentos-entre-entidades/29445
-			name = "ingredientes_receitas", 
+			name = "ingrediente_receita", 
 			joinColumns = {
 					@JoinColumn(name = "receita_id", referencedColumnName = "id", nullable=false, updatable = false)}, 
 			inverseJoinColumns = {
 					@JoinColumn(name = "ingrediente_id", referencedColumnName = "id", nullable=false, updatable = false)}
 			)
-	private HashMap<Ingrediente, Float> ingredientes; //lista que armazena os ingredientes usados na receita
+	private List<Ingrediente> ingrediente; //lista que armazena os ingredientes usados na receita
+	
+	@ElementCollection
+	@Column(name = "quantidade")
+	private List<Float> quantidade;
+	
+	@ElementCollection
+	@CollectionTable(name = "ingrediente_quantidade", joinColumns = {@JoinColumn(name = "quantidade_id", referencedColumnName = "id")})
+	@MapKeyColumn(name = "ingrediente")
+	@Column(name="ingrediente_quantidade")
+	private Map<Ingrediente, Float> ingrediente_quantidade = new HashMap<>();
 	//https://www.baeldung.com/java-hashmap
 	
 	public Receita() {
@@ -132,8 +146,7 @@ public class Receita {
 	public CustoFixo getCustoFixo() {
 		return custoFixo;
 	}
-	
-	
+
 	public void setCustoInicial() {
 		Float somaIngredientes = (float) 0;
 		
@@ -145,14 +158,14 @@ public class Receita {
 		 * Ingredientes que possuem unidade de medida por peso ou líquido serão recebidos como Float da seguinte maneira:
 		 * cada algarismo na parte inteira do Float corresponte a 1kg ou 1L, enquanto os algarismos da parte fracionária 
 		 * (após a vígula) são frações de Litro ou kg. Assim, o chocolate do exemplo acima seria representado 
-		 * por 0.5, ou, se fossem 250g, 0.25, e assim por diante*/
-		for(Map.Entry<Ingrediente, Float> item : this.ingredientes.entrySet()) {
-			somaIngredientes += item.getKey().getPreco() * item.getValue();
+		 * por 0.5, ou, se fossem 250g, 0.25, e assim por diante
+		 * Para entender melhor a iteração sobre o Map abaixo --> https://www.alura.com.br/artigos/iterando-por-um-hashmap-em-java */
+		for(Map.Entry<Ingrediente, Float> ing_qtd : this.ingrediente_quantidade.entrySet()) {
+			somaIngredientes += ing_qtd.getKey().getPreco() * ing_qtd.getValue();
 		}
 		
 		//calculando o valor dos ingredientes conforme as quantidades de cada item usadas na receita
 		this.custoInicial = somaIngredientes + (this.tempoPreparo * this.custoFixo.getValorHora()) + (this.custoEmbalagem * this.rendimento);
-		
 	}
 	
 	public Float getPrecoVenda(){
@@ -163,28 +176,5 @@ public class Receita {
 		this.precoVenda = this.custoInicial * this.lucro;
 	}
 	
-	public HashMap<Ingrediente, Float> getIngredientes() {
-		return ingredientes;
-	}
 	
-	public void setIngredientes(Ingrediente ingrediente, Float quantidade) {
-		this.ingredientes.put(ingrediente, quantidade);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(ingredientes);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Receita other = (Receita) obj;
-		return Objects.equals(ingredientes, other.ingredientes);
-	}
 }

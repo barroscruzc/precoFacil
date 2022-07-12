@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projetoFinal.precoFacil.Models.CustoFixo;
 import com.projetoFinal.precoFacil.Repositories.CustoFixoRepository;
@@ -26,6 +27,27 @@ public class CustoFixoController {
 		return "viewExpense";
 	}
 	
+	//create
+	@GetMapping("/add")
+	public String addExpense(Model model) {
+		CustoFixo custoFixo = new CustoFixo();
+		model.addAttribute("custoFixo", custoFixo);
+		return "addExpense";
+	}
+	
+	
+	@PostMapping("/add")
+	public String saveExpense(@RequestParam Float salario, @RequestParam Integer horasDia, Model model) {
+
+		// realiza o encapsulamento dos dados
+		CustoFixo custoFixo = new CustoFixo();
+		custoFixo.setSalario(salario);
+		custoFixo.setHorasDia(horasDia);
+		custoFixo.setValorHora(salario, horasDia);
+		// salvar o novo Usuario no banco
+		custoFixoRepository.save(custoFixo);;
+		return "viewExpense";
+	}
 	
 	//UPDATE
 	@GetMapping("/update")
@@ -39,6 +61,5 @@ public class CustoFixoController {
 		custoFixoRepository.save(custoFixo);
 		return "redirect:/precofacil/expense/view";
 	}
-	
 	
 }

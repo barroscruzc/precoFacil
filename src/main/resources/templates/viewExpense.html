@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custos Fixos</title>
+</head>
+<body>
+    <h1>Preço Fácil</h1>
+    <p>Faça a precificação das suas receitasde uma forma simples e rápida!</p>
+    <button href="/springseg/home">Início</button><br><br>
+    <form th:object="${custoFixo}">
+        <fieldset>
+            <div>
+                <label for="salario"></label>
+                <input tyoe="number" id="salario" name="salario" th:field="*{salario}" disabled/>
+            </div>
+            <div>
+                <label for="horasDia"></label>
+                <input tyoe="number" id="horasDia" name="horasDia" th:field="*{horasDia}" disabled/>
+            </div>
+            <div>
+                <label for="valorHora"></label>
+                <input tyoe="number" id="valorHora" name="valorHora" th:field="*{valorHora}" disabled/>
+            </div>
+        </fieldset>
+        <button href="/precofacil/expense/update">Editar</button>
+   </form>
+</body>
+</html>
