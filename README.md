@@ -7,17 +7,23 @@ Trata-se de uma aplicação java web para precificar produtos da culinária arte
 - o <b>valor de venda</b>, que considera margem de lucro, salário e estimativa de custos fixos do(a) empreendedor(a).<br>
 
 Tecnologias utilizadas e conhecimentos acadêmicos exercitados:<br>
-- Linguagem Java;<br>
-- Programação Orientada a Objetos;<br>
-- Spring Boot;<br>
-- Hibernate/JPA;<br>
-- Funções básicas de inserção e manipulação de dados em banco de dados relacionais (CRUD);<br>
-- MySQL Workbench;<br>
+- Linguagem <b>Java</b>;<br>
+- <b>Programação Orientada a Objetos</b>;<br>
+- <b>Spring Boot</b>;<br>
+- <b>Hibernate/JPA<b>;<br>
+- Funções básicas de inserção e manipulação de dados <b>(CRUD)</b> em <b>banco de dados relacionais </b>;<br>
+- Técnicas de <b>Mapeamento Objeto-Relacional</b> (ORM);<br>
+- Relacionamentos entre entidades/tabelas (<b>Many To Many e Many To One</b>);<br> 
+- Criação e Mapeamento de tabelas utilizando <b>Java Collections</b>;
+- <b>MySQL</b> Workbench;<br>
 - Thymeleaf; <br>
-- Padrão MVC (Model, View, Controller);<br>
-- Prototipagem de telas com MarvelApp;<br>
-- HTML, CSS, Javascript e Angular.<br>
+- Criação de native querys para adaptar a necessidades específicas do projeto;<br>
+- Padrão <b>MVC</b> (Model, View, Controller);<br>
+- Prototipagem de telas com <b>MarvelApp</b>;<br>
+- Frontend com <b>HTML, CSS, Javascript e Angular</b>.<br>
 
 A versão inicial das telas pode ser visualizada em: https://marvelapp.com/prototype/95b361f  
+
+Outras funcionalidades e/ou tecnologias serão implementadas ao longo do tempo, tornando a aplicação mais robusta e completa.
 
 Quaisquer críticas ou sugestões sobre os códigos são bem-vindas!
