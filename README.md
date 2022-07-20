@@ -27,3 +27,12 @@ A versão inicial das telas pode ser visualizada em: https://marvelapp.com/proto
 Outras funcionalidades e/ou tecnologias serão implementadas ao longo do tempo, tornando a aplicação mais robusta e completa.
 
 Quaisquer críticas ou sugestões sobre os códigos são bem-vindas!
+
+![image](https://user-images.githubusercontent.com/93226440/179882098-d5c0451f-f0db-455e-99b6-906f8ed2710f.png)
+![image](https://user-images.githubusercontent.com/93226440/179882249-854c63c6-1194-4e30-ad3f-bbd59b1692ab.png)
+![image](https://user-images.githubusercontent.com/93226440/179882356-45df29d2-afff-4c3e-8710-b64c323ad217.png)
+![image](https://user-images.githubusercontent.com/93226440/179882383-aaed8b54-3c16-424d-b7f6-8a9779ffc02d.png)
+![image](https://user-images.githubusercontent.com/93226440/179882450-4f44c938-f87b-4e5a-94f9-d4f1ee59a69a.png)
+![image](https://user-images.githubusercontent.com/93226440/179882490-19fbe4cb-e629-47f7-9a4f-e54adafddf43.png)
+![image](https://user-images.githubusercontent.com/93226440/179882516-94eba875-4450-49f2-93f5-3b7b04fef7cc.png)
+
