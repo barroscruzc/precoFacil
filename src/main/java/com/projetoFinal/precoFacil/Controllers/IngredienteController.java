@@ -7,13 +7,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projetoFinal.precoFacil.Repositories.IngredienteRepository;
 import com.projetoFinal.precoFacil.Models.Ingrediente;
@@ -26,7 +24,7 @@ public class IngredienteController {
 	private IngredienteRepository ingredienteRepository;
 
 	// CRUD - Read (query 'select * from ingrediente')
-	@RequestMapping(path = "/all")
+	@GetMapping(path = "/all")
 	public String listaIngredientes(Model model) {
 		model.addAttribute("ingrediente", ingredienteRepository.findAll());
 		return "allIngredients";
@@ -40,32 +38,26 @@ public class IngredienteController {
 	}
 
 	@PostMapping("/new/add")
-	public String addIngrediente(@RequestParam String nome, @RequestParam Long id, @RequestParam Float preco, Model model) {
+	public String addIngrediente(@ModelAttribute Ingrediente ingrediente, Model model) {
 
-		Ingrediente ingNome = ingredienteRepository.findByNome(nome);
+		Ingrediente ingNome = ingredienteRepository.findByNome(ingrediente.getNome());
 		if (ingNome != null) {
 			//mensagem de erro
 			model.addAttribute("nomeExiste", "Ingrediente já cadastrado!");
 			//recarrega a página, exibindo a mensagem de erro
-			return "newRecipe";
+			return "newIngredient";
 		} else {
-			Ingrediente ingrediente = new Ingrediente();
-			
-			//setando elementos descritivos e identificadores do Ingrediente
-			ingrediente.setNome(nome);
-			ingrediente.setPreco(preco);
-			
 			//salvar ingrediente no banco de dados
 			ingredienteRepository.save(ingrediente);
-			model.addAttribute("salvoSucesso", "Ingrediente salvo com sucesso!");
-			return "redirect:/precofacil/allIngredients";
+			//model.addAttribute("salvoSucesso", "Ingrediente salvo com sucesso!");
+			model.addAttribute("ingrediente", ingredienteRepository.findAll());
+			return "allIngredients";
 				}
 	}
 
-
 	// CRUD - update
 	@GetMapping(path="/update/{id}")
-	public String editIngredient(@PathVariable("id") Long id, Model model) {
+	public String editIngredient(@PathVariable Long id, Model model) {
 		Optional<Ingrediente> ingredienteOpt = ingredienteRepository.findById(id);
 		if (!ingredienteOpt.isPresent()) {
 			throw new IllegalArgumentException("Cadastro inválido.");
@@ -75,12 +67,8 @@ public class IngredienteController {
 		return "updateIngredient";
 	}
 	
-	@PostMapping("/update/{id}/save")
-	public String saveIngrediente(@Valid @ModelAttribute("pessoa") Ingrediente ingrediente, @PathVariable("id") Long id, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			return "updateIngredient";
-		}
-		
+	@PostMapping("/update/save")
+	public String saveIngrediente(@Valid @ModelAttribute("ingrediente") Ingrediente ingrediente, Model model) {
 		/*Verificação do nome
 		 * se for encontrado cadastro com o mesmo nome preenchido no formulario, 
 		 * mas com id diferente, recarrega a pagina e exibe mensagem de erro*/
@@ -89,20 +77,25 @@ public class IngredienteController {
 			//mensagem de erro
 			model.addAttribute("nomeExiste", "Ingrediente já cadastrado!");
 			//recarrega a página, exibindo a mensagem de erro
-			return "newRecipe";
+			return "updateIngredient";
 		} else {
 			//salva ingrediente no banco de dados
-			ingredienteRepository.save(ingrediente);
-			model.addAttribute("salvoSucesso", "Ingrediente salvo com sucesso!");
-			return "redirect:/precofacil/allIngredients";
+			Ingrediente novoIngrediente = ingredienteRepository.findById(ingrediente.getId()).get();
+			novoIngrediente.setNome(ingrediente.getNome());
+			novoIngrediente.setPreco(ingrediente.getPreco());
+			ingredienteRepository.save(novoIngrediente);
+			//model.addAttribute("salvoSucesso", "Ingrediente salvo com sucesso!");
+			
+			return "redirect:/precofacil/ingredient/all";
 				}
 	}
 	
 	// CRUD - Delete
 	@RequestMapping(path="/delete/{id}")
-	public String deleteIngrediente(@PathVariable Long id) {
+	public String deleteIngrediente(@PathVariable Long id, Model model) {
 		ingredienteRepository.deleteById(id);
-		return "redirect:/precofacil/allIngredients";
+		model.addAttribute("ingrediente", ingredienteRepository.findAll());
+		return "allIngredients";
 	}
 
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas</title>
+</head>
+<body>
+<style>
+	div .box{
+	border-radius: 15px;
+	border: 1px solid black;
+	width: 300px;
+	padding: 10px;
+	}
+</style>
+    <h1>Preço Fácil</h1>
+    <p>Faça a precificação das suas receitasde uma forma simples e rápida!</p>
+    <a href="/precofacil/home">Início</a><br><br>
+    <a th:href="@{/precofacil/recipe/new}">Nova Receita</a>
+    
+    <div class="box" th:each="receita : ${receita}">
+    <p>ID</p>
+    	<p><b>Id:</b><span id="id" th:inline="text">[[${receita.id}]]</span></p>
+		<p><b>Nome:</b><span id="nome" th:inline="text">[[${receita.nome}]] </span></p>
+		<p><b>Opções:</b></p>
+		<a th:href="@{/precofacil/recipe/view/{id}(id=${receita.id})}">Detalhes</a>  
+    	<a th:href="@{/precofacil/recipe/update/{id}(id=${receita.id})}">Editar</a>
+    	<a th:href="@{/precofacil/recipe/delete/{id}(id=${receita.id})}">Excluir</a>
+    	<table>
+		<thead>
+		<tr>
+		<th>Nome</th><th>Quantidade</th><th>Valor</th><th th:colspan="2">Opções</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="item : ${receita.medida.entrySet()}">
+		<td th:text="${item.key.nome}"></td>
+		<td th:text="${item.value}"></td>
+		</tr>
+		</tbody>
+		</table>
+		<a th:href="@{/precofacil/recipe/new/{idReceita}/save(idReceita=${receita.id})}">Próximo</a>
+	    </div>
+        
+</body>
+</html>

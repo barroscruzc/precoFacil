@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="custoFixo")
-public class CustoFixo {
+@Table(name="valorHora")
+public class ValorHora {
 
 	@Id
-	@GeneratedValue(strategy =  GenerationType.IDENTITY) //número do id é autoincrementado
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "valorHora")
@@ -24,20 +24,24 @@ public class CustoFixo {
 	@Column(name = "horasDia")
 	private Integer horasDia;
 	
-	public CustoFixo() {
+	public ValorHora() {
 		super();
 	}
-	
-	public CustoFixo(Float salario, Integer horasDia) {
+
+	public ValorHora(Long id, Float salario, Integer horasDia) {
 		super();
+		this.id = id;
 		this.salario = salario;
 		this.horasDia = horasDia;
-		Float valorHora = salario / 20 / horasDia;
-		this.valorHora = valorHora;
+		this.valorHora = salario / 20 / horasDia;
 	}
 
 	public Long getId() {
 		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public Float getValorHora() {

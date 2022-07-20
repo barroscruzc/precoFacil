@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,25 +7,38 @@
     <title>Custos Fixos</title>
 </head>
 <body>
+<style>
+	table {
+	width: 500px;
+	border-collapse: collapse;
+	}
+	
+	td, th {
+	border: 1px solid black;
+	}
+</style>
     <h1>Preço Fácil</h1>
     <p>Faça a precificação das suas receitasde uma forma simples e rápida!</p>
-    <button href="/springseg/home">Início</button><br><br>
-    <form th:object="${custoFixo}">
-        <fieldset>
-            <div>
-                <label for="salario"></label>
-                <input tyoe="number" id="salario" name="salario" th:field="*{salario}" disabled/>
-            </div>
-            <div>
-                <label for="horasDia"></label>
-                <input tyoe="number" id="horasDia" name="horasDia" th:field="*{horasDia}" disabled/>
-            </div>
-            <div>
-                <label for="valorHora"></label>
-                <input tyoe="number" id="valorHora" name="valorHora" th:field="*{valorHora}" disabled/>
-            </div>
-        </fieldset>
-        <button href="/precofacil/expense/update">Editar</button>
-   </form>
+    <a href="/precofacil/home">Início</a><br><br>
+    <table>
+        <thead>
+	       <tr>
+				<th>ID</th>
+				<th>Salário (mensal)</th>
+				<th>Horas trabalhadas por dia</th>
+				<th>Valor da Hora trabalhada</th>
+				<th>Alterar</th>
+			</tr>
+			</thead>
+			<tbody>
+            <tr th:each="custoFixo : ${custoFixo}">
+                <td id="id" th:inline="text">[[${custoFixo.id}]] <td/>
+                <td id="salario" th:inline="text">[[${custoFixo.salario}]] <td/>
+                <td id="horasDia"  th:inline="text">[[${custoFixo.horasDia}]] <td/>
+            	<td id="valorHora" th:inline="text">[[${custoFixo.valorHora}]] <td/>
+            	<td><a th:href="@{/precofacil/expense/update/{id}(id=${custoFixo.id})}">Editar</a></td>
+            </tr>
+        </tbody>
+   </table>
 </body>
 </html>

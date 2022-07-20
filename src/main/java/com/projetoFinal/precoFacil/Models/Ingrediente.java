@@ -1,10 +1,18 @@
 package com.projetoFinal.precoFacil.Models;
 
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -23,9 +31,11 @@ public class Ingrediente {
 	@Column(name = "preco", nullable = false)
 	private Float preco;
 	
-	//cria uma nova tabela "ingredientesReceita", gerando um relacionamento muitos para muitos  | https://www.baeldung.com/jpa-cascade-types 
-	//@ManyToMany(mappedBy = "ingredientes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)    // | https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
-	//private Colle<Receita, Float> receitas = new HashMap<>();
+	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	/*@JoinTable(name = "medida_ingrediente", 
+			joinColumns= {@JoinColumn(name = "ingrediente_id", referencedColumnName = "id")},
+			inverseJoinColumns= {@JoinColumn(name = "medida_id", referencedColumnName = "id")})*/
+	//private List<Medida> medida;
 	
 	public Ingrediente() {
 		super();
@@ -35,6 +45,10 @@ public class Ingrediente {
 		super();
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -61,4 +75,21 @@ public class Ingrediente {
 		this.preco = preco;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, nome, preco);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ingrediente other = (Ingrediente) obj;
+		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(preco, other.preco);
+	}
+	
 }

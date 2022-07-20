@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Ingredientes</title>
+</head>
+<body>
+<style>
+.item{
+background-color: #C2FFE7;
+border-bottom: 1px solid blue;
+text-decoration: none;
+}
+
+form{
+border: 1px solid black;
+}
+
+fieldset{
+border-bottom: 1px solid black;
+}
+</style>
+<h1>Preço Fácil</h1>
+<p>Faça a precificação das suas receitas de uma forma simples e rápida!</p>
+<h2>Passo 2 de 3</h2>
+
+<table>
+<tr>
+<td th:text="${receitaId}"></td><td><h3 th:text="${receitaNome}"></h3></td> <!--  <td><h3 th:text="${receita.codigo}"></h3></td> -->
+</tr>
+<tr>
+<td th:text="${receitaDescricao}"></td>
+</tr>    
+</table>
+
+<form th:action="@{/precofacil/recipe/add/ingredient/save}" th:object="${medida}" method="post">
+<input th:name="idReceita" th:value="${receitaId}">
+<label for="selectIng">Selecione Ingrediente</label>
+	<select id="selectIng" th:field="*{idIngrediente}">
+	<option th:each="i : ${todosIngredientes}" th:value="${i.id}" th:utext="${i.nome}" th:name="${idIngrediente}" >
+	</option>
+	</select>
+	<label for="insertQuantity">Quantidade</label>
+	<input type="text" th:field="*{quantidade}">
+	<input type="submit" value="salvar">
+</form>
+<h2>Lista de ingredientes utilizados na receita</h2>
+<table>
+<thead>
+<tr>
+<th>Nome</th><th>Quantidade</th><th>Valor</th><th th:colspan="2">Opções</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="item : ${listaIng}">
+<td th:text="${item.key.nome}"></td>
+<td th:text="${item.value}"></td>
+<td><a th:href="@{/precofacil/recipe/add/ingredient/delete/{idIngrediente}/{idReceita}(idIngrediente=${item.key.id}, idReceita=${receitaId})}">Excluir</a></td>
+</tr>
+</tbody>
+</table>
+<a th:href="@{/precofacil/recipe/new/{idReceita}/save(idReceita=${receitaId})}">Próximo</a>
+</body>
+</html>

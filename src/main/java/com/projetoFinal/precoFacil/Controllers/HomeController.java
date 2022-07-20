@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(path = "/precofacil")
 public class HomeController {
 
-	@GetMapping("/")
+	@GetMapping(value = { "/" , ""})
 	public String precoFacil() {
 		return "precoFacil";
 	}

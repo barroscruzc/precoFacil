@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,11 +12,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -28,59 +25,45 @@ public class Receita {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name ="codigo", nullable = false)
+	@Column(name ="codigo", length = 50, unique = true)
 	private Integer codigo;
 	
-	@Column(name = "nome", length = 30, nullable = false)
+	@Column(name ="nome", length = 20, nullable = false, unique = true)
 	private String nome;
 	
 	@Column(name="descricao", length = 100, nullable = false)
 	private String descricao;
 	
-	@Column(name="rendimento", nullable = false)
+	@Column(name="rendimento")
 	private Integer rendimento;
 	
-	@Column(name="custoEmbalagem", nullable = false)
-	private Float custoEmbalagem;
+	@Column(name="embalagem")
+	private Float embalagem;
 	
-	@Column(name="lucro", nullable = false)
-	private Integer lucro;
-	
-	@Column(name="categoria", nullable=false, length = 15)
+	@Column(name="categoria", length = 20)
 	private String categoria;
 	
-	@Column(name="tempoPreparo", nullable=false)
+	@Column(name="tempoPreparo")
 	private Integer tempoPreparo;
 	
-	@Column(name="precoVenda", nullable=false)
+	@Column(name="lucro")
+	private Float lucro;
+	
+	@Column(name="precoVenda")
 	private Float precoVenda;
 	
-	@Column(name="custoInicial", nullable=false)
+	@Column(name="custoInicial")
 	private Float custoInicial;
 	
 	@ManyToOne
-	private CustoFixo custoFixo;
+	private ValorHora valorHora;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
-	@JoinTable(  //Sobre anotações JoinTable e JoinColumn -> https://www.devmedia.com.br/hibernate-mapping-mapeando-relacionamentos-entre-entidades/29445
-			name = "ingrediente_receita", 
-			joinColumns = {
-					@JoinColumn(name = "receita_id", referencedColumnName = "id", nullable=false, updatable = false)}, 
-			inverseJoinColumns = {
-					@JoinColumn(name = "ingrediente_id", referencedColumnName = "id", nullable=false, updatable = false)}
-			)
-	private List<Ingrediente> ingrediente; //lista que armazena os ingredientes usados na receita
-	
-	@ElementCollection
-	@Column(name = "quantidade")
-	private List<Float> quantidade;
-	
-	@ElementCollection
-	@CollectionTable(name = "ingrediente_quantidade", joinColumns = {@JoinColumn(name = "quantidade_id", referencedColumnName = "id")})
-	@MapKeyColumn(name = "ingrediente")
-	@Column(name="ingrediente_quantidade")
-	private Map<Ingrediente, Float> ingrediente_quantidade = new HashMap<>();
-	//https://www.baeldung.com/java-hashmap
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "receita_ingrediente", 
+					joinColumns = @JoinColumn (name = "receita_id", referencedColumnName = "id"))
+	@MapKeyJoinColumn(name = "ingrediente_id")
+	@Column(name = "medida")
+	private Map<Ingrediente, Float> medida = new HashMap<>();
 	
 	public Receita() {
 		super();
@@ -90,18 +73,26 @@ public class Receita {
 		return id;
 	}
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Integer getCodigo() {
 		return codigo;
 	}
+
 	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public String getDescricao() {
 		return descricao;
 	}
@@ -114,18 +105,13 @@ public class Receita {
 	public void setRendimento(Integer rendimento) {
 		this.rendimento = rendimento;
 	}
-	public Float getCustoEmbalagem() {
-		return custoEmbalagem;
+	public Float getEmbalagem() {
+		return embalagem;
 	}
-	public void setCustoEmbalagem(Float custoEmbalagem) {
-		this.custoEmbalagem = custoEmbalagem * rendimento;
+	public void setEmbalagem(Float embalagem) {
+		this.embalagem = embalagem;
 	}
-	public Integer getLucro() {
-		return lucro;
-	}
-	public void setLucro(Integer lucro) {
-		this.lucro = lucro;
-	}
+	
 	public String getCategoria() {
 		return categoria;
 	}
@@ -139,42 +125,53 @@ public class Receita {
 		this.tempoPreparo = tempoPreparo;
 	}
 	
-	public void setCustoFixo(CustoFixo custoFixo) {
-		this.custoFixo = custoFixo;
-	}
-	
-	public CustoFixo getCustoFixo() {
-		return custoFixo;
+	public Float getLucro() {
+		return lucro;
 	}
 
-	public void setCustoInicial() {
-		Float somaIngredientes = (float) 0;
-		
-		/*ITERANDO SOBRE O HASHMAP PARA SOMAR OS VALORES DOS INGREDIENTES USADOS
-		 *O custo de cada ingrediente é igual ao seu preço multiplicado pelo custo por unidade ou medida .
-		 * Deste modo, por exemplo, o custo de 500g de chocolate será igual ao valor do kg do produto 
-		 * (que é o atributo preco do objeto ingrediente) multiplicado pela quantidade usada na receita
-		 * (que será um valor Float 0.5, inserido no hashMap como value para a key Ingrediente
-		 * Ingredientes que possuem unidade de medida por peso ou líquido serão recebidos como Float da seguinte maneira:
-		 * cada algarismo na parte inteira do Float corresponte a 1kg ou 1L, enquanto os algarismos da parte fracionária 
-		 * (após a vígula) são frações de Litro ou kg. Assim, o chocolate do exemplo acima seria representado 
-		 * por 0.5, ou, se fossem 250g, 0.25, e assim por diante
-		 * Para entender melhor a iteração sobre o Map abaixo --> https://www.alura.com.br/artigos/iterando-por-um-hashmap-em-java */
-		for(Map.Entry<Ingrediente, Float> ing_qtd : this.ingrediente_quantidade.entrySet()) {
-			somaIngredientes += ing_qtd.getKey().getPreco() * ing_qtd.getValue();
-		}
-		
-		//calculando o valor dos ingredientes conforme as quantidades de cada item usadas na receita
-		this.custoInicial = somaIngredientes + (this.tempoPreparo * this.custoFixo.getValorHora()) + (this.custoEmbalagem * this.rendimento);
+	public void setLucro(Float lucro) {
+		this.lucro = lucro;
+	}
+
+	public void setValorHora(ValorHora valorHora) {
+		this.valorHora = valorHora;
 	}
 	
+	public Float getValorHora() {
+		return this.valorHora.getValorHora();
+	}
+	
+	public Map<Ingrediente, Float> getMedida() {
+		return medida;
+	}
+
+	public void setMedida(Ingrediente ingrediente, Float quantidade) {
+		this.medida.put(ingrediente, quantidade);
+	}
+	
+	public void setCustoInicial(Float custoInicial) {
+		this.custoInicial = custoInicial;
+	}
+	
+	public Float getCustoInicial(){
+		return custoInicial;
+	}
+
 	public Float getPrecoVenda(){
 		return precoVenda;
 	}
 
-	public void setPrecoVenda() {
-		this.precoVenda = this.custoInicial * this.lucro;
+	//calcula o valor de venda
+	public void setPrecoVenda(Float precoVenda) {
+		this.precoVenda = precoVenda;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Receita [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", descricao=" + descricao
+				+ ", rendimento=" + rendimento + ", embalagem=" + embalagem + ", categoria=" + categoria
+				+ ", tempoPreparo=" + tempoPreparo + ", lucro=" + lucro + ", precoVenda=" + precoVenda
+				+ ", custoInicial=" + custoInicial + ", valorHora=" + valorHora + ", medida=" + medida + "]";
+	}
 	
 }

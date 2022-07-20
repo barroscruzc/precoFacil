@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custos Fixos</title>
+</head>
+<body>
+    <h1>Preço Fácil</h1>
+    <p>Faça a precificação das suas receitasde uma forma simples e rápida!</p>
+    <a href="/precofacil/home">Início</a><br><br>
+    <form th:object="${custoFixo}" action="#" th:action="@{/precofacil/expense/update/save}" method="post">
+        <fieldset>
+            <div>
+                <label for="salario">Salário (mensal):</label>
+                <input type="number" id="salario" name="salario" th:field="*{salario}">
+            </div>
+            <div>
+                <label for="horasDia">Horas trabalhadas por dia:</label>
+                <input type="number" id="horasDia" name="horasDia" th:field="*{horasDia}">
+            </div>
+            <div>
+            	<label for="id">Id</label>
+                <input type="number" id="id" name="id" th:field="*{id}" readonly>
+            </div>
+            <input type="submit" value="Salvar"/>
+        </fieldset>
+   </form>
+</body>
+</html>

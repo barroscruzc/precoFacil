@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredientes</title>
+</head>
+<body>
+<style>
+	table {
+	border-collapse: collapse;
+	}
+	
+	td {
+	border: 1px solid black;
+	}
+</style>
+    <h1>Preço Fácil</h1>
+    <p>Faça a precificação das suas receitasde uma forma simples e rápida!</p>
+    <a href="/precofacil/home">Início</a><br><br>
+    <a th:href="@{/precofacil/ingredient/new}">Novo Ingrediente</a>
+    <table>
+        <thead>
+	       <tr>
+				<td>ID</td>
+				<td>Nome</td>
+				<td>Preço</td>
+				<td>Opções</td><td></td>
+			</tr>
+			</thead>
+			<tbody>
+            <tr th:each="i : ${ingrediente}">
+                <td id="id" th:inline="text">[[${i.id}]] <td/>
+                <td id="salario" th:inline="text">[[${i.nome}]] <td/>
+                <td id="horasDia"  th:inline="text">[[${i.preco}]] <td/>
+                <td><a th:href="@{/precofacil/ingredient/delete/{id}(id=${i.id})}">Excluir</a></td>
+            	<td><a th:href="@{/precofacil/ingredient/update/{id}(id=${i.id})}">Editar</a></td>
+            </tr>
+        </tbody>
+   </table>
+</body>
+</html>
