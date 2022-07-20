@@ -22,11 +22,11 @@ Tecnologias utilizadas e conhecimentos acadêmicos exercitados:<br>
 - Prototipagem de telas com <b>MarvelApp</b>;<br>
 - Frontend com <b>HTML, CSS, Javascript e Angular</b>.<br>
 
-A versão inicial das telas pode ser visualizada em: https://marvelapp.com/prototype/95b361f  
-
 Outras funcionalidades e/ou tecnologias serão implementadas ao longo do tempo, tornando a aplicação mais robusta e completa.
 
 Quaisquer críticas ou sugestões sobre os códigos são bem-vindas!
+
+Abaixo uma prévia da versão inicial(protótipo) das telas, pode ser visualizada por completo em: https://marvelapp.com/prototype/95b361f  
 
 ![image](https://user-images.githubusercontent.com/93226440/179882098-d5c0451f-f0db-455e-99b6-906f8ed2710f.png)
 ![image](https://user-images.githubusercontent.com/93226440/179882249-854c63c6-1194-4e30-ad3f-bbd59b1692ab.png)
