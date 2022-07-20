@@ -10,14 +10,14 @@ Tecnologias utilizadas e conhecimentos acadêmicos exercitados:<br>
 - Linguagem <b>Java</b>;<br>
 - <b>Programação Orientada a Objetos</b>;<br>
 - <b>Spring Boot</b>;<br>
-- <b>Hibernate/JPA<b>;<br>
+- <b>Hibernate/JPA</b>;<br>
 - Funções básicas de inserção e manipulação de dados <b>(CRUD)</b> em <b>banco de dados relacionais </b>;<br>
 - Técnicas de <b>Mapeamento Objeto-Relacional</b> (ORM);<br>
 - Relacionamentos entre entidades/tabelas (<b>Many To Many e Many To One</b>);<br> 
 - Criação e Mapeamento de tabelas utilizando <b>Java Collections</b>;
 - <b>MySQL</b> Workbench;<br>
-- Thymeleaf; <br>
-- Criação de native querys para adaptar a necessidades específicas do projeto;<br>
+- <b>Thymeleaf</b>; <br>
+- Criação de <b>native querys</b> para adaptar a necessidades específicas do projeto;<br>
 - Padrão <b>MVC</b> (Model, View, Controller);<br>
 - Prototipagem de telas com <b>MarvelApp</b>;<br>
 - Frontend com <b>HTML, CSS, Javascript e Angular</b>.<br>
