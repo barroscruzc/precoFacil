@@ -1,8 +1,13 @@
 package com.projetoFinal.precoFacil.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,27 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projetoFinal.precoFacil.Models.Ingrediente;
-import com.projetoFinal.precoFacil.Models.Receita;
 import com.projetoFinal.precoFacil.Models.Medida;
-import com.projetoFinal.precoFacil.Repositories.ValorHoraRepository;
+import com.projetoFinal.precoFacil.Models.Receita;
 import com.projetoFinal.precoFacil.Repositories.IngredienteRepository;
 import com.projetoFinal.precoFacil.Repositories.ReceitaRepository;
 //import com.projetoFinal.precoFacil.Repositories.MedidaRepository;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import com.projetoFinal.precoFacil.Repositories.ValorHoraRepository;
 
 
 @Controller // Informa que classe UserController eh o nosso controller
